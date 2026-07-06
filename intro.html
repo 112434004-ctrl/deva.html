@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Form</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        h1 {
+            color: blue;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to My Website</h1>
+
+    <p>This is a simple website. Please enter your details below.</p>
+
+    <form id="form">
+        Name:
+        <input type="text" id="name"><br><br>
+
+        Gender:
+        <input type="radio" name="gender"> Male
+        <input type="radio" name="gender"> Female
+        <br><br>
+
+        <input type="checkbox" id="agree">
+        I agree to the terms.
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("form").onsubmit = function(e) {
+            e.preventDefault();
+
+            let name = document.getElementById("name").value;
+
+            if (name == "") {
+                alert("Please enter your name.");
+            } else {
+                alert("Welcome " + name + "!");
+            }
+        };
+    </script>
+
+</body>
+</html>
