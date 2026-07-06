@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Form Example</title>
+</head>
+<body>
+
+    <h2>Student Registration Form</h2>
+
+    <form action="#" method="post">
+
+        <!-- Text Field -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <!-- Text Area -->
+        <label for="address">Address:</label><br>
+        <textarea id="address" name="address" rows="4" cols="30"></textarea><br><br>
+
+        <!-- Combo Box -->
+        <label for="course">Course:</label>
+        <select id="course" name="course">
+            <option value="">--Select Course--</option>
+            <option value="BCA">BCA</option>
+            <option value="BSc">BSc</option>
+            <option value="BCom">BCom</option>
+            <option value="BA">BA</option>
+        </select><br><br>
+
+        <!-- List Box -->
+        <label for="skills">Skills:</label><br>
+        <select id="skills" name="skills" multiple size="4">
+            <option>HTML</option>
+            <option>CSS</option>
+            <option>JavaScript</option>
+            <option>Python</option>
+        </select><br><br>
+
+        <!-- Radio Buttons -->
+        <label>Gender:</label><br>
+        <input type="radio" id="male" name="gender" value="Male">
+        <label for="male">Male</label>
+
+        <input type="radio" id="female" name="gender" value="Female">
+        <label for="female">Female</label><br><br>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit">
+
+    </form>
+
+</body>
+</html>
