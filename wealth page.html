@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wealth Planner</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:20px;color:#222;}
+  h1{text-align:center;color:#a8791f;}
+  .box{background:#fff;max-width:480px;margin:20px auto;padding:20px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.1);}
+  label{display:block;margin:8px 0 4px;font-size:14px;font-weight:bold;}
+  input,select{width:100%;padding:8px;box-sizing:border-box;border:1px solid #ccc;border-radius:5px;}
+  button{margin-top:12px;width:100%;padding:10px;background:#a8791f;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold;}
+  button:hover{background:#7a5814;}
+  .result{margin-top:12px;padding:10px;background:#f5ecd9;border-radius:5px;font-weight:bold;display:none;}
+  .art{background:#f5ecd9;padding:10px;margin:6px 0;border-radius:5px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<h1>💰 Wealth Planner</h1>
+
+<div class="box">
+  <h3>Salary Calculator</h3>
+  <label>Gross Salary (₹)</label><input id="gross" type="number">
+  <label>Deductions (%)</label><input id="ded" type="number">
+  <button onclick="salary()">Calculate</button>
+  <div class="result" id="salaryOut"></div>
+</div>
+
+<div class="box">
+  <h3>EMI Calculator</h3>
+  <label>Loan Amount (₹)</label><input id="loan" type="number">
+  <label>Interest Rate (% p.a.)</label><input id="rate" type="number">
+  <label>Tenure (months)</label><input id="tenure" type="number">
+  <button onclick="emi()">Calculate</button>
+  <div class="result" id="emiOut"></div>
+</div>
+
+<div class="box">
+  <h3>Insurance Guide</h3>
+  <select id="insType">
+    <option value="life">Life Insurance</option>
+    <option value="health">Health Insurance</option>
+    <option value="vehicle">Vehicle Insurance</option>
+  </select>
+  <button onclick="insurance()">Show Info</button>
+  <div class="result" id="insOut"></div>
+</div>
+
+<div class="box">
+  <h3>Investment Recommender</h3>
+  <label>Age</label><input id="age" type="number">
+  <label>Risk Level</label>
+  <select id="risk">
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+  </select>
+  <button onclick="invest()">Recommend</button>
+  <div class="result" id="investOut"></div>
+</div>
+
+<div class="box">
+  <h3>Savings Planner</h3>
+  <label>Monthly Income (₹)</label><input id="income" type="number">
+  <label>Monthly Expenses (₹)</label><input id="expense" type="number">
+  <button onclick="savings()">Plan</button>
+  <div class="result" id="saveOut"></div>
+</div>
+
+<div class="box">
+  <h3>Financial Articles</h3>
+  <div class="art" onclick="alert('Follow the 50/30/20 rule: needs, wants, savings.')">How to Manage Your Salary</div>
+  <div class="art" onclick="alert('Keep total EMI under 40% of your take-home income.')">EMI: What You Should Know</div>
+  <div class="art" onclick="alert('Build an emergency fund before you start investing.')">How to Start Investing</div>
+</div>
+
+<script>
+function salary(){
+  const g = +document.getElementById('gross').value;
+  const d = +document.getElementById('ded').value;
+  const take = g - (g*d/100);
+  const out = document.getElementById('salaryOut');
+  out.style.display='block';
+  out.textContent = 'Take-home Salary: ₹' + take.toFixed(0);
+}
+
+function emi(){
+  const p = +document.getElementById('loan').value;
+  const r = (+document.getElementById('rate').value)/12/100;
+  const n = +document.getElementById('tenure').value;
+  const e = (p*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  const out = document.getElementById('emiOut');
+  out.style.display='block';
+  out.textContent = 'Monthly EMI: ₹' + e.toFixed(0);
+}
+
+function insurance(){
+  const type = document.getElementById('insType').value;
+  const info = {
+    life: 'Life Insurance replaces lost income for your family. A term plan is usually best value.',
+    health: 'Health Insurance covers hospital and medical bills.',
+    vehicle: 'Vehicle Insurance covers accidents, theft and damage.'
+  };
+  const out = document.getElementById('insOut');
+  out.style.display='block';
+  out.textContent = info[type];
+}
+
+function invest(){
+  const age = +document.getElementById('age').value;
+  const risk = document.getElementById('risk').value;
+  let cats;
+  if(risk==='low') cats='Fixed Deposits, PPF, Debt Funds';
+  else if(risk==='medium') cats='Index Funds, Hybrid Funds, PPF';
+  else cats='Equity Funds, Stocks, Small-cap Funds';
+  if(age>50) cats+=', Senior Savings Scheme';
+  const out = document.getElementById('investOut');
+  out.style.display='block';
+  out.textContent = 'Suggested: ' + cats;
+}
+
+function savings(){
+  const inc = +document.getElementById('income').value;
+  const exp = +document.getElementById('expense').value;
+  const actual = inc - exp;
+  const recommended = inc*0.2;
+  const out = document.getElementById('saveOut');
+  out.style.display='block';
+  out.textContent = 'You save ₹'+actual.toFixed(0)+' (recommended: ₹'+recommended.toFixed(0)+')';
+}
+</script>
+</body>
+</html>
