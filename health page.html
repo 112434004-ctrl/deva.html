@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeBalance — Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#F3F6F2;
+    --panel:#FFFFFF;
+    --ink:#1C2521;
+    --ink-soft:#4A564F;
+    --line:#DDE4DC;
+    --health:#2F6F5E;
+    --health-soft:#E4F0EA;
+    --health-dark:#1E4A3E;
+    --shadow: 0 8px 24px rgba(28,37,33,0.08);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--ivory); color:var(--ink);
+    font-family:'Inter',sans-serif; line-height:1.5;
+  }
+  h1,h2,h3,h4{ font-family:'Fraunces',serif; font-weight:600; margin:0 0 .4em; letter-spacing:-0.01em; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:0 24px; }
+
+  header.hero{ text-align:center; padding:60px 24px 20px; }
+  header.hero h1{ font-size:clamp(1.9rem,4.2vw,2.8rem); color:var(--health-dark); }
+  header.hero p{ color:var(--ink-soft); max-width:520px; margin:8px auto 0; }
+
+  .toolgrid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:40px 0; }
+  @media(max-width:800px){ .toolgrid{ grid-template-columns:1fr; } }
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px; box-shadow:var(--shadow);
+  }
+  .panel h3{ font-size:1.15rem; }
+  .panel .sub{ color:var(--ink-soft); font-size:.88rem; margin-bottom:18px; }
+  .field{ margin-bottom:14px; }
+  .field label{ display:block; font-size:.82rem; font-weight:600; margin-bottom:5px; color:var(--ink-soft); }
+  .field input, .field select{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
+    font-size:.95rem; background:#FBFCFA;
+  }
+  .field input:focus, .field select:focus{ outline:2px solid var(--ink); outline-offset:1px; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .btn{
+    width:100%; margin-top:6px; padding:12px; border-radius:9px; font-weight:700;
+    border:none; cursor:pointer; background:var(--health); color:#fff; font-size:.95rem; transition:.15s;
+  }
+  .btn:hover{ background:var(--health-dark); }
+  .result{
+    margin-top:18px; padding:16px; border-radius:10px; background:var(--ivory);
+    border:1px solid var(--line); display:none;
+  }
+  .result.show{ display:block; }
+  .result .big{ font-family:'IBM Plex Mono',monospace; font-size:1.8rem; font-weight:600; }
+  .result .lbl{ font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); }
+  .badge{ display:inline-block; padding:4px 12px; border-radius:999px; font-size:.78rem; font-weight:700; margin-top:6px; }
+  .badge.under{ background:#DCEAFB; color:#1D5FA3; }
+  .badge.normal{ background:var(--health-soft); color:var(--health-dark); }
+  .badge.over{ background:#FBEBD6; color:#95560F; }
+  .badge.obese{ background:#FBDCDC; color:#A32A2A; }
+
+  .tabbar{ display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .tabbtn{
+    border:1px solid var(--line); background:#FBFCFA; padding:8px 14px; border-radius:999px;
+    font-size:.85rem; font-weight:600; cursor:pointer;
+  }
+  .tabbtn.active{ background:var(--health); color:#fff; border-color:var(--health); }
+  .tabcontent{ font-size:.92rem; color:var(--ink-soft); line-height:1.65; }
+  .tabcontent h4{ color:var(--ink); font-size:1rem; margin-bottom:.3em; }
+
+  .tiplist{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+  .tiplist li{ background:var(--ivory); border-left:3px solid var(--health); padding:10px 14px; border-radius:6px; font-size:.9rem; }
+
+  .fullwidth{ grid-column:1 / -1; }
+  footer{ text-align:center; padding:40px 24px 60px; color:var(--ink-soft); font-size:.85rem; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>❤️ Health</h1>
+  <p>Know your BMI, understand healthy weight, and discover better daily habits.</p>
+</header>
+
+<div class="wrap">
+  <div class="toolgrid">
+
+    <div class="panel">
+      <h3>🧮 BMI Calculator</h3>
+      <div class="sub">Enter your details to calculate your Body Mass Index.</div>
+      <div class="row2">
+        <div class="field"><label>Height (cm)</label><input type="number" id="bmi-height" placeholder="170"></div>
+        <div class="field"><label>Weight (kg)</label><input type="number" id="bmi-weight" placeholder="65"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Age</label><input type="number" id="bmi-age" placeholder="25"></div>
+        <div class="field"><label>Gender</label>
+          <select id="bmi-gender"><option>Male</option><option>Female</option><option>Other</option></select>
+        </div>
+      </div>
+      <button class="btn" onclick="calcBMI()">Calculate BMI</button>
+      <div class="result" id="bmi-result">
+        <div class="lbl">Your BMI</div>
+        <div class="big" id="bmi-value">--</div>
+        <span class="badge" id="bmi-badge">--</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>⚖️ Healthy Weight Guide</h3>
+      <div class="sub">Find your recommended weight range for a given height.</div>
+      <div class="field"><label>Height (cm)</label><input type="number" id="wg-height" placeholder="170"></div>
+      <button class="btn" onclick="calcWeightGuide()">Get My Range</button>
+      <div class="result" id="wg-result">
+        <div class="lbl">Recommended Weight Range</div>
+        <div class="big" id="wg-value">--</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>💧 Daily Health Tips</h3>
+      <div class="sub">A balanced day covers exercise, food, sleep and hydration.</div>
+      <ul class="tiplist">
+        <li>🏃 <b>Exercise:</b> Aim for at least 30 minutes of moderate activity, 5 days a week.</li>
+        <li>🥗 <b>Food:</b> Fill half your plate with vegetables and fruit at every meal.</li>
+        <li>😴 <b>Sleep:</b> Adults need 7–9 hours of quality sleep each night.</li>
+        <li>🚰 <b>Hydration:</b> Drink roughly 2–3 litres of water daily, more if active.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>📚 Age-based Health Articles</h3>
+      <div class="sub">Guidance changes across life stages.</div>
+      <div class="tabbar" id="age-tabs">
+        <button class="tabbtn active" data-age="teen">Teenagers</button>
+        <button class="tabbtn" data-age="young">Young Adults</button>
+        <button class="tabbtn" data-age="adult">Adults</button>
+        <button class="tabbtn" data-age="senior">Seniors</button>
+      </div>
+      <div class="tabcontent" id="age-content"></div>
+    </div>
+
+    <div class="panel fullwidth">
+      <h3>🏋️ Fitness Recommendations</h3>
+      <div class="sub">Choose your current level for a suggested weekly activity plan.</div>
+      <div class="field" style="max-width:260px;">
+        <label>Fitness Level</label>
+        <select id="fitness-level" onchange="showFitness()">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+        </select>
+      </div>
+      <div class="tabcontent" id="fitness-content"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>LifeBalance – Health Page · Educational estimates only, not medical advice.</footer>
+
+<script>
+/* ---------- BMI ---------- */
+function calcBMI(){
+  const h = parseFloat(document.getElementById('bmi-height').value);
+  const w = parseFloat(document.getElementById('bmi-weight').value);
+  if(!h || !w){ alert('Please enter height and weight.'); return; }
+  const bmi = w / ((h/100)*(h/100));
+  document.getElementById('bmi-value').textContent = bmi.toFixed(1);
+  const badge = document.getElementById('bmi-badge');
+  let cls, text;
+  if(bmi < 18.5){ cls='under'; text='Underweight'; }
+  else if(bmi < 25){ cls='normal'; text='Healthy Weight'; }
+  else if(bmi < 30){ cls='over'; text='Overweight'; }
+  else { cls='obese'; text='Obese'; }
+  badge.className = 'badge '+cls;
+  badge.textContent = text;
+  document.getElementById('bmi-result').classList.add('show');
+}
+
+/* ---------- Healthy Weight Guide ---------- */
+function calcWeightGuide(){
+  const h = parseFloat(document.getElementById('wg-height').value);
+  if(!h){ alert('Please enter your height.'); return; }
+  const m = h/100;
+  const low = (18.5*m*m).toFixed(1);
+  const high = (24.9*m*m).toFixed(1);
+  document.getElementById('wg-value').textContent = low+' kg – '+high+' kg';
+  document.getElementById('wg-result').classList.add('show');
+}
+
+/* ---------- Age-based Articles ---------- */
+const ageArticles = {
+  teen: {title:'Teenagers (13–19)', body:'Growing bodies need consistent nutrition, calcium and protein for bone development, at least 60 minutes of daily activity, and 8–10 hours of sleep. Limit sugary drinks and prioritise regular meals over restrictive dieting.'},
+  young: {title:'Young Adults (20–35)', body:'This is the stage to build lifelong habits: strength training 2–3x a week, balanced meals, stress management and regular health check-ups, even when you feel invincible.'},
+  adult: {title:'Adults (36–55)', body:'Metabolism slows and screening becomes important — blood pressure, cholesterol and blood sugar checks. Prioritise mobility, core strength and recovery alongside cardio.'},
+  senior: {title:'Seniors (56+)', body:'Focus shifts to balance, bone density and joint health. Low-impact activity like walking and swimming, protein-rich meals, and regular medical monitoring help maintain independence.'}
+};
+function renderAgeTab(key){
+  const a = ageArticles[key];
+  document.getElementById('age-content').innerHTML = `<h4>${a.title}</h4><p>${a.body}</p>`;
+  document.querySelectorAll('#age-tabs .tabbtn').forEach(b=>b.classList.toggle('active', b.dataset.age===key));
+}
+document.querySelectorAll('#age-tabs .tabbtn').forEach(b=>b.addEventListener('click',()=>renderAgeTab(b.dataset.age)));
+renderAgeTab('teen');
+
+/* ---------- Fitness Recommendations ---------- */
+const fitnessPlans = {
+  beginner: '<h4>Beginner Plan</h4><ul><li>3 days/week: 20–30 min brisk walking or light cycling</li><li>2 days/week: bodyweight basics — squats, push-ups (or knee push-ups), planks</li><li>Daily: 5–10 min stretching</li><li>Rest at least 1–2 days fully</li></ul>',
+  intermediate: '<h4>Intermediate Plan</h4><ul><li>4 days/week: 30–45 min mixed cardio (running, cycling, swimming)</li><li>3 days/week: structured strength training with weights or resistance bands</li><li>1 day/week: mobility & flexibility work (yoga)</li><li>1 full rest day</li></ul>'
+};
+function showFitness(){
+  const lvl = document.getElementById('fitness-level').value;
+  document.getElementById('fitness-content').innerHTML = fitnessPlans[lvl];
+}
+showFitness();
+</script>
+</body>
+</html>
